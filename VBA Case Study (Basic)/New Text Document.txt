@@ -1,0 +1,436 @@
+Perform Task-
+  Dim new_wsheet As Worksheet
+
+    'Creating new sheet
+    Set new_wsheet = ThisWorkbook.Worksheets.Add
+    new_wsheet.Name = "2014_Report"
+
+    'Getting country names
+    Call Macro9
+
+    'formatting sheet (macro in module 4)
+         Call Macro11
+         ActiveSheet.Range("D4").Select
+         ActiveCell.FormulaR1C1 = "Retailer_Country"
+         ActiveSheet.Range("D4").Select
+         Call formatting
+         ActiveWorkbook.Save
+ 
+     'getting total revenue (macro in module 4)
+         Call revenue
+    
+     'formatting
+         Call formatting1
+End Sub
+
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+
+End Sub
+
+
+Module 1-
+Sub data_consolidation()
+     Dim i As Integer
+     Dim temp As Integer
+   '  i = "1401"
+     Dim lcell As Integer
+    ' Debug.Print (Sheets(i).Range("a1").Value)
+        temp = 1
+        For i = 1401 To 1412
+                    
+            lcell = Sheets(CStr(i)).Range("A1").End(xlDown).Row
+                If i = 1401 Then
+                    Sheets(CStr(i)).Range("a1:f" & lcell).Copy _
+                    Sheets("2014_DATA").Range("a" & temp)
+                    Else
+                        Sheets(CStr(i)).Range("a2:f" & lcell).Copy _
+                        Sheets("2014_DATA").Range("a" & temp)
+                End If
+            temp = temp + lcell
+         Next i
+
+End Sub
+
+Module2-
+Sub Macro1()
+'
+' Macro1 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    Range("B1").Select
+    Selection.AutoFilter
+End Sub
+Sub Macro2()
+'
+' Macro2 Macro
+'
+
+'
+End Sub
+Sub Macro3()
+'
+' Macro3 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    Range("B1").Select
+    Sheets("2014_DATA").Select
+End Sub
+Sub Macro4()
+'
+' Macro4 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    Range("B1").Select
+    Sheets("2014_reportt").Select
+    ActiveWindow.ScrollRow = 1048553
+    ActiveWindow.ScrollRow = 1046136
+    ActiveWindow.ScrollRow = 1043720
+    ActiveWindow.ScrollRow = 1041304
+    ActiveWindow.ScrollRow = 1029224
+    ActiveWindow.ScrollRow = 1026808
+    ActiveWindow.ScrollRow = 1019560
+    ActiveWindow.ScrollRow = 1009896
+    ActiveWindow.ScrollRow = 1002648
+    ActiveWindow.ScrollRow = 988152
+    ActiveWindow.ScrollRow = 971240
+    ActiveWindow.ScrollRow = 925336
+    ActiveWindow.ScrollRow = 874599
+    ActiveWindow.ScrollRow = 848023
+    ActiveWindow.ScrollRow = 814199
+    ActiveWindow.ScrollRow = 292339
+    ActiveWindow.ScrollRow = 282675
+    ActiveWindow.ScrollRow = 260930
+    ActiveWindow.ScrollRow = 251266
+    ActiveWindow.ScrollRow = 200530
+    ActiveWindow.ScrollRow = 193282
+    ActiveWindow.ScrollRow = 181202
+    ActiveWindow.ScrollRow = 169122
+    ActiveWindow.ScrollRow = 45905
+    ActiveWindow.ScrollRow = 28993
+    ActiveWindow.ScrollRow = 9665
+    ActiveWindow.ScrollRow = 2417
+    ActiveWindow.ScrollRow = 1
+    Sheets("2014_DATA").Select
+End Sub
+Sub Macro5()
+'
+' Macro5 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    Range("B1").Select
+End Sub
+Sub Macro6()
+'
+' Macro6 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    Range("B1").Select
+    Range("B2:B3781").AdvancedFilter Action:=xlFilterCopy, CopyToRange:=Range( _
+        "H6"), Unique:=True
+    Range("H6:H11").Select
+    Selection.Cut
+    Sheets("2014_reportt").Select
+    ActiveSheet.Paste
+    ActiveWorkbook.Save
+End Sub
+Sub Macro7()
+'
+' Macro7 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    Range("B1").Select
+End Sub
+Sub Macro8()
+'
+' Macro8 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    ActiveWindow.ScrollRow = 1
+End Sub
+Sub Macro9()
+'
+' Macro9 Macro
+'
+
+'
+    Sheets("2014_DATA").Select
+    Range("B2:B3781").AdvancedFilter Action:=xlFilterCopy, CopyToRange:=Range( _
+        "H9"), Unique:=True
+    Range("H9:H14").Select
+    Range("H14").Activate
+    Selection.Cut
+    Sheets("2014_Report").Select
+    ActiveSheet.Range("d5").Select
+    ActiveSheet.Paste
+    Sheets("2014_DATA").Select
+    Range("H16").Select
+    Sheets("2014_Report").Select
+End Sub
+
+Module 3 -
+
+Sub get_uniq_country()
+
+    Range("D5:D3784").AdvancedFilter Action:=xlFilterInPlace, Unique:=True
+    ActiveWindow.SmallScroll Down:=-12
+End Sub
+
+
+Function udf_revenue(C_name As String) As Variant
+        
+        Dim rev1 As Variant
+        'C_name = "Canada"
+        Dim lcell As Integer
+        lcell = Worksheets("2014_data").Range("a1048576").End(xlUp).Row
+        For i = 2 To lcell
+        If (Worksheets("2014_data").Range("B" & i).Value = C_name) Then
+            rev1 = rev1 + Worksheets("2014_data").Range("f" & i).Value
+        End If
+        Next i
+        udf_revenue = rev1
+                
+                
+End Function
+
+Module 4- 
+
+
+Sub formatting()
+'
+' formatting Macro
+'
+
+'
+   
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 65535
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    ActiveWorkbook.Save
+End Sub
+Sub Macro11()
+'
+' Macro11 Macro
+'
+
+'
+    ActiveSheet.Columns("D:D").ColumnWidth = 15.14
+End Sub
+Sub revenue()
+'
+' revenue Macro
+'
+
+'
+    ActiveSheet.Range("e4") = "Revenue"
+    Range("E4").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 65535
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Columns("E:E").ColumnWidth = 11.29
+    Range("E5").Select
+    ActiveCell.FormulaR1C1 = "=udf_revenue(RC[-1])"
+    Range("E5").Select
+    Selection.AutoFill Destination:=Range("E5:E10"), Type:=xlFillDefault
+    Range("E5:E10").Select
+    Range("E5:E10").Select
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlEdgeTop).LineStyle = xlNone
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlEdgeRight).LineStyle = xlNone
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Range("F5").Select
+    ActiveWorkbook.Save
+End Sub
+Sub formatting1()
+'
+' Macro13 Macro
+'
+
+'
+    Range("D4:E4").Select
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    
+    
+    
+    Range("d3").Select
+    ActiveCell.FormulaR1C1 = "Sales Report of 2014"
+    With ActiveCell.Characters(Start:=1, Length:=16).Font
+        .Name = "Calibri"
+        .FontStyle = "Regular"
+        .Size = 11
+        .Strikethrough = False
+        .Superscript = False
+        .Subscript = False
+        .OutlineFont = False
+        .Shadow = False
+        .Underline = xlUnderlineStyleNone
+        .ThemeColor = xlThemeColorLight1
+        .TintAndShade = 0
+        .ThemeFont = xlThemeFontMinor
+    End With
+    With ActiveCell.Characters(Start:=17, Length:=4).Font
+        .Name = "Calibri"
+        .FontStyle = "Bold"
+        .Size = 11
+        .Strikethrough = False
+        .Superscript = False
+        .Subscript = False
+        .OutlineFont = False
+        .Shadow = False
+        .Underline = xlUnderlineStyleSingle
+        .ThemeColor = xlThemeColorLight1
+        .TintAndShade = 0
+        .ThemeFont = xlThemeFontMinor
+    End With
+    ActiveWorkbook.Save
+    ActiveWorkbook.Save
+End Sub
+
+Module 5-
+Sub Macro10()
+'
+' Macro10 Macro
+'
+
+'
+    ActiveCell.FormulaR1C1 = "Sales Report of 2014"
+    With ActiveCell.Characters(Start:=1, Length:=16).Font
+        .Name = "Calibri"
+        .FontStyle = "Regular"
+        .Size = 11
+        .Strikethrough = False
+        .Superscript = False
+        .Subscript = False
+        .OutlineFont = False
+        .Shadow = False
+        .Underline = xlUnderlineStyleNone
+        .ThemeColor = xlThemeColorLight1
+        .TintAndShade = 0
+        .ThemeFont = xlThemeFontMinor
+    End With
+    With ActiveCell.Characters(Start:=17, Length:=4).Font
+        .Name = "Calibri"
+        .FontStyle = "Bold"
+        .Size = 11
+        .Strikethrough = False
+        .Superscript = False
+        .Subscript = False
+        .OutlineFont = False
+        .Shadow = False
+        .Underline = xlUnderlineStyleSingle
+        .ThemeColor = xlThemeColorLight1
+        .TintAndShade = 0
+        .ThemeFont = xlThemeFontMinor
+    End With
+    ActiveWorkbook.Save
+End Sub
