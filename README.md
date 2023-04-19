@@ -1,3 +1,5 @@
+#VBA
+
 Project 1 (BASIC) – Automating Sales Report (Retail Domain) - The task is to automate the process 
 of generating a report on the combined revenue generated in the year 2014 across different 
 countries for a sports equipment retailer. This is to be done using VBA code. The tasks 
